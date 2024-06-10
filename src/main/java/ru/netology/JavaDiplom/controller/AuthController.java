@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.netology.JavaDiplom.dto.UserDTO;
 import ru.netology.JavaDiplom.entity.User;
 import ru.netology.JavaDiplom.exeption.AppError;
@@ -25,7 +26,7 @@ public class AuthController {
 
     @PostMapping("/login")
 
-    public ResponseEntity<?> createAuthToken (UserDTO user){
+    public ResponseEntity<?> createAuthToken (@RequestBody UserDTO user){
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getLogin(),user.getPassword()));
         } catch (BadCredentialsException e){

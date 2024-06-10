@@ -2,10 +2,13 @@ package ru.netology.JavaDiplom.service;
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.netology.JavaDiplom.entity.User;
 import ru.netology.JavaDiplom.repository.UserRepository;
@@ -19,22 +22,30 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
+
     public Optional<User> findByLogin(String login) {
-        return userRepository.findBylogin(login);
+        return userRepository.findByLogin(login);
     }
 
 
     @Override
     @Transient
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User user = findByLogin(login).orElseThrow(() -> new UsernameNotFoundException(
-                String.format("Пользователь '$S'не найден", login)
-        ));
 
+        Optional<User> userRes = userRepository.findByLogin(login);
+
+        if (userRes.isEmpty()) {
+            throw new UsernameNotFoundException("User with username: " + userRes + " not found");
+        }
+
+        User user = userRes.get();
         return new org.springframework.security.core.userdetails.User (
                 user.getLogin(),
                 user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))
         );
     }
+
+
+
 }
