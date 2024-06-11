@@ -14,8 +14,9 @@ import java.util.List;
 public class UserDTO {
     private int id;
 
-    private String Login;
+    private String login;
 
     private String password;
+
 
 }

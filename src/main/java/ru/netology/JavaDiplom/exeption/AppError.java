@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AppError {
+public class AppError extends Throwable {
     private int status;
     private String message;
 

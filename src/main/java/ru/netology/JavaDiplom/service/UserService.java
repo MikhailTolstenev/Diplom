@@ -15,12 +15,13 @@ import ru.netology.JavaDiplom.repository.UserRepository;
 
 import java.beans.Transient;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
 
     public Optional<User> findByLogin(String login) {
@@ -39,13 +40,13 @@ public class UserService implements UserDetailsService {
         }
 
         User user = userRes.get();
-        return new org.springframework.security.core.userdetails.User (
+        return new org.springframework.security.core.userdetails.User(
                 user.getLogin(),
                 user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))
         );
-    }
 
+    }
 
 
 }

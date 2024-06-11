@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +17,15 @@ import ru.netology.JavaDiplom.exeption.AppError;
 import ru.netology.JavaDiplom.service.JwtTokenUtils;
 import ru.netology.JavaDiplom.service.UserService;
 
+import java.util.Collections;
+import java.util.Map;
+
 @Controller
 @AllArgsConstructor
 public class AuthController {
     private final UserService userService;
     private final JwtTokenUtils jwtTokenUtils;
+
     private final AuthenticationManager authenticationManager;
 
 
@@ -28,8 +33,9 @@ public class AuthController {
 
     public ResponseEntity<?> createAuthToken (@RequestBody UserDTO user){
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getLogin(),user.getPassword()));
-        } catch (BadCredentialsException e){
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword()));
+
+        } catch (BadCredentialsException   e){
             return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(),
                     "некорретный логин или пароль"),HttpStatus.UNAUTHORIZED);
         }
@@ -38,5 +44,6 @@ public class AuthController {
 
         return ResponseEntity.ok(token);
     }
+
 
 }

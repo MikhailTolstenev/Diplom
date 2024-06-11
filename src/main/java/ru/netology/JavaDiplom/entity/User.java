@@ -22,12 +22,12 @@ import java.util.List;
         @GeneratedValue
         private int id;
 
-        @Column(name = "login", nullable = false)
+        @Column(name = "login")
         private String login;
 
-        @Column(name = "password", nullable = false)
+        @Column(name = "password")
         private String password;
-        @Column(name = "role", nullable = false)
+        @Column(name = "role")
         private String role;
 
 
